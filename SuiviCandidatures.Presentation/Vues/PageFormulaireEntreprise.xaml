@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageFormulaireEntreprise"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             x:DataType="viewmodels:FormulaireEntrepriseViewModel"
+             Title="{Binding Titre}">
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="10" MaximumWidthRequest="680" HorizontalOptions="Start">
+
+            <Label Text="{Binding Titre}" Style="{StaticResource TitrePage}" Margin="0,0,0,8" />
+
+            <Label Text="Nom *" />
+            <Entry Text="{Binding Nom}" Placeholder="Nom de l'entreprise" />
+
+            <Label Text="Site web" />
+            <Entry Text="{Binding SiteWeb}" Placeholder="https://..." Keyboard="Url" />
+
+            <Label Text="Secteur d'activité" />
+            <Entry Text="{Binding Secteur}" />
+
+            <Label Text="Notes" />
+            <Editor Text="{Binding Notes}" HeightRequest="120" AutoSize="Disabled" />
+
+            <Label Text="Les adresses et les contacts s'ajoutent depuis la fiche de l'entreprise."
+                   Style="{StaticResource TexteSecondaire}" />
+
+            <Label Text="{Binding MessageErreur}" TextColor="#DC2626" />
+
+            <HorizontalStackLayout Spacing="12" Margin="0,8,0,0">
+                <Button Text="Enregistrer" Command="{Binding EnregistrerCommand}" />
+                <Button Text="Annuler" Command="{Binding AnnulerCommand}"
+                        BackgroundColor="Transparent" BorderWidth="1"
+                        BorderColor="{StaticResource CouleurPrimaire}"
+                        TextColor="{StaticResource CouleurPrimaire}" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

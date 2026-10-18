@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SuiviCandidatures.Coeur/SuiviCandidatures.Coeur.csproj" />
+  <Project Path="SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj" />
+</Solution>

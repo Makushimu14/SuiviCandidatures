@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="SuiviCandidatures.Presentation.CoquilleApplication"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:vues="clr-namespace:SuiviCandidatures.Presentation.Vues"
+       Title="Suivi des candidatures"
+       FlyoutBehavior="Locked"
+       FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource CouleurSurfaceClair}, Dark={StaticResource CouleurSurfaceSombre}}"
+       Shell.BackgroundColor="{AppThemeBinding Light={StaticResource CouleurSurfaceClair}, Dark={StaticResource CouleurSurfaceSombre}}"
+       Shell.TitleColor="{AppThemeBinding Light={StaticResource CouleurTexteClair}, Dark={StaticResource CouleurTexteSombre}}"
+       Shell.ForegroundColor="{StaticResource CouleurPrimaire}"
+       Shell.TabBarIsVisible="False">
+
+    <ShellContent Title="Accueil" Route="Accueil" ContentTemplate="{DataTemplate vues:PageAccueil}" />
+    <ShellContent Title="Candidatures" Route="Candidatures" ContentTemplate="{DataTemplate vues:PageListeCandidatures}" />
+    <ShellContent Title="Entreprises" Route="Entreprises" ContentTemplate="{DataTemplate vues:PageListeEntreprises}" />
+    <ShellContent Title="Statistiques" Route="Statistiques" ContentTemplate="{DataTemplate vues:PageStatistiques}" />
+    <ShellContent Title="Paramètres" Route="Parametres" ContentTemplate="{DataTemplate vues:PageParametres}" />
+
+</Shell>

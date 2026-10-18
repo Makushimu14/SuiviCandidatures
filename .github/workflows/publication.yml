@@ -1,0 +1,55 @@
+name: Publication
+
+# Se déclenche en poussant une étiquette de version, par exemple :
+#   git tag v1.0.0
+#   git push origin v1.0.0
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Publication de l'exécutable Windows
+    runs-on: windows-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v6
+
+      - name: Installation du SDK .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Installation du workload MAUI
+        run: dotnet workload install maui
+
+      - name: Détermination de la version
+        id: version
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "numero=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Publication autonome (win-x64)
+        run: >
+          dotnet publish SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj
+          -c Release
+          -f net10.0-windows10.0.19041.0
+          -r win-x64
+          --self-contained true
+          -p:ApplicationDisplayVersion=${{ steps.version.outputs.numero }}
+          -o publication/win-x64
+
+      - name: Création de l'archive
+        shell: pwsh
+        run: |
+          Compress-Archive -Path publication/win-x64/* -DestinationPath "SuiviCandidatures-${{ github.ref_name }}-win-x64.zip"
+
+      - name: Création de la release GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SuiviCandidatures-${{ github.ref_name }}-win-x64.zip
+          generate_release_notes: true

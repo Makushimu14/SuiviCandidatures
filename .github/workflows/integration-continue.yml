@@ -1,0 +1,57 @@
+name: Intégration continue
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Compilation Windows
+    runs-on: windows-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v6
+
+      - name: Installation du SDK .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Installation du workload MAUI
+        run: dotnet workload install maui
+
+      - name: Compilation
+        run: dotnet build SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj -c Release -f net10.0-windows10.0.19041.0
+
+  # Contrôle indicatif : la cible Mac Catalyst n'est pas testée par l'auteur du projet.
+  # La version d'Xcode exigée change avec chaque version corrective du SDK .NET : un échec ici est informatif
+  # et ne bloque pas le reste.
+  maccatalyst:
+    name: Compilation Mac Catalyst (indicatif)
+    runs-on: macos-26
+    continue-on-error: true
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v6
+
+      - name: Installation du SDK .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Sélection de la version d'Xcode la plus récente installée
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          echo "Xcode sélectionné : $XCODE"
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+
+      - name: Installation du workload MAUI
+        run: dotnet workload install maui
+
+      - name: Compilation
+        run: dotnet build SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj -c Release -f net10.0-maccatalyst

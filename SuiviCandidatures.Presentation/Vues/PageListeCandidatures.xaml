@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageListeCandidatures"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             x:DataType="viewmodels:ListeCandidaturesViewModel"
+             Title="Candidatures">
+    <Grid Padding="32" RowSpacing="16" RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="{Binding Titre}" Style="{StaticResource TitrePage}" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Nouvelle candidature" Command="{Binding AjouterCommand}" HorizontalOptions="End" />
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="2*,*,*,Auto" ColumnSpacing="12">
+            <Entry Text="{Binding TexteRecherche}" Placeholder="Rechercher (offre, entreprise, référence ou lien)" />
+            <Picker Grid.Column="1" Title="Statut"
+                    ItemsSource="{Binding StatutsFiltre}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                    SelectedItem="{Binding StatutFiltreSelectionne}" />
+            <Picker Grid.Column="2" Title="Tri"
+                    ItemsSource="{Binding TrisDisponibles}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                    SelectedItem="{Binding TriSelectionne}" />
+            <Button Grid.Column="3" Text="{Binding LibelleSens}" Command="{Binding InverserTriCommand}" />
+        </Grid>
+
+        <Label Grid.Row="2" Text="{Binding MessageErreur}" TextColor="#DC2626" />
+
+        <Grid Grid.Row="3">
+            <CollectionView ItemsSource="{Binding Lignes}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:LigneCandidature">
+                        <Border Style="{StaticResource Carte}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="QuandLigneTapee" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,130,250" ColumnSpacing="16">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <Label Text="{Binding TitreOffre}" FontAttributes="Bold" />
+                                    <Label Text="{Binding NomEntreprise}" Style="{StaticResource TexteSecondaire}" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding DateAffichee}" HorizontalTextAlignment="End" />
+                                    <Label Text="{Binding TypeContratLibelle}" HorizontalTextAlignment="End"
+                                           Style="{StaticResource TexteSecondaire}" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="2" VerticalOptions="Center"
+                                        BackgroundColor="{Binding CouleurStatut}"
+                                        StrokeThickness="0" Padding="12,4"
+                                        StrokeShape="RoundRectangle 12">
+                                    <Label Text="{Binding StatutLibelle}" TextColor="White" FontSize="12" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Aucune candidature à afficher."
+                   IsVisible="{Binding AucunResultat}"
+                   Style="{StaticResource TexteSecondaire}"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+
+        <Grid Grid.Row="4" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+            <Button Text="◀ Précédent" Command="{Binding PagePrecedenteCommand}" />
+            <Label Grid.Column="1" Text="{Binding LibellePagination}"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
+            <Button Grid.Column="2" Text="Suivant ▶" Command="{Binding PageSuivanteCommand}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

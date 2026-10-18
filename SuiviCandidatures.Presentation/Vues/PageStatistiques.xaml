@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageStatistiques"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             x:DataType="viewmodels:StatistiquesViewModel"
+             Title="Statistiques">
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="16">
+
+            <Grid ColumnDefinitions="*,260" ColumnSpacing="12">
+                <Label Text="{Binding Titre}" Style="{StaticResource TitrePage}" VerticalOptions="Center" />
+                <Picker Grid.Column="1" Title="Période"
+                        ItemsSource="{Binding PeriodesDisponibles}"
+                        ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                        SelectedItem="{Binding PeriodeSelectionnee}" />
+            </Grid>
+
+            <Label Text="{Binding MessageErreur}" TextColor="#DC2626" />
+
+            <Label Text="Aucune candidature sur cette période."
+                   IsVisible="{Binding AucuneDonnee}" Style="{StaticResource TexteSecondaire}" />
+
+            <!-- Indicateurs -->
+            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="12">
+                <Border Style="{StaticResource Carte}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding NombreCandidatures}" FontSize="28" FontAttributes="Bold" />
+                        <Label Text="Candidatures" Style="{StaticResource TexteSecondaire}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Carte}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding TauxReponse}" FontSize="28" FontAttributes="Bold" />
+                        <Label Text="Taux de réponse" Style="{StaticResource TexteSecondaire}" />
+                        <Label Text="{Binding DetailTauxReponse}" FontSize="12" Style="{StaticResource TexteSecondaire}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Carte}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding DelaiMoyenReponse}" FontSize="28" FontAttributes="Bold" />
+                        <Label Text="Délai moyen de réponse" Style="{StaticResource TexteSecondaire}" />
+                        <Label Text="{Binding DetailDelaiMoyen}" FontSize="12" Style="{StaticResource TexteSecondaire}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="3" Style="{StaticResource Carte}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding TauxEntretien}" FontSize="28" FontAttributes="Bold" />
+                        <Label Text="Taux d'entretien" Style="{StaticResource TexteSecondaire}" />
+                        <Label Text="{Binding DetailTauxEntretien}" FontSize="12" Style="{StaticResource TexteSecondaire}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="4" Style="{StaticResource Carte}">
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding NombreOffresRecues}" FontSize="28" FontAttributes="Bold" />
+                        <Label Text="Offres reçues" Style="{StaticResource TexteSecondaire}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Répartitions -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                <VerticalStackLayout Spacing="16" VerticalOptions="Start">
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Répartition par statut" FontAttributes="Bold" FontSize="16" />
+                            <lvc:PieChart Series="{Binding SeriesStatut}" HeightRequest="240"
+                                          LegendPosition="Right" LegendTextPaint="{Binding PeintureTexte}" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Candidatures par site" FontAttributes="Bold" FontSize="16" />
+                            <lvc:CartesianChart Series="{Binding SeriesSites}"
+                                                XAxes="{Binding AxesXSites}" YAxes="{Binding AxesYSites}"
+                                                HeightRequest="{Binding HauteurGraphiqueSites}" />
+                            <Label Text="Renseigné à partir des offres liées aux candidatures."
+                                   FontSize="12" Style="{StaticResource TexteSecondaire}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="16" VerticalOptions="Start">
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Répartition par type de contrat" FontAttributes="Bold" FontSize="16" />
+                            <lvc:PieChart Series="{Binding SeriesTypeContrat}" HeightRequest="240"
+                                          LegendPosition="Right" LegendTextPaint="{Binding PeintureTexte}" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Répartition par type de candidature" FontAttributes="Bold" FontSize="16" />
+                            <lvc:PieChart Series="{Binding SeriesTypeCandidature}" HeightRequest="240"
+                                          LegendPosition="Right" LegendTextPaint="{Binding PeintureTexte}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Candidatures par semaine -->
+            <Border Style="{StaticResource Carte}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding TitreSemaines}" FontAttributes="Bold" FontSize="16" />
+                    <lvc:CartesianChart Series="{Binding SeriesSemaines}"
+                                        XAxes="{Binding AxesXSemaines}" YAxes="{Binding AxesYSemaines}"
+                                        HeightRequest="260" />
+                    <Label Text="Le libellé indique le lundi de la semaine. Ce graphique ne dépend pas de la période choisie."
+                           FontSize="12" Style="{StaticResource TexteSecondaire}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Définitions -->
+            <Label FontSize="12" Style="{StaticResource TexteSecondaire}"
+                   Text="Réponse : l'employeur a répondu (étude, entretien, offre ou refus), d'après le statut actuel ou l'historique. Les candidatures retirées sont exclues des taux. Le délai de réponse est mesuré de la date de candidature au premier changement de statut vers une réponse enregistré dans l'historique." />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

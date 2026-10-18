@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageParametres"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             x:DataType="viewmodels:ParametresViewModel"
+             Title="Paramètres">
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="16" MaximumWidthRequest="560" HorizontalOptions="Start">
+
+            <Label Text="{Binding Titre}" Style="{StaticResource TitrePage}" />
+
+            <Label Text="{Binding LibelleDelaiRelance}" />
+            <Entry Text="{Binding DelaiRelanceParDefautJours}" Keyboard="Numeric" />
+
+            <Label Text="Nombre d'éléments par page (candidatures et entreprises)" />
+            <Picker ItemsSource="{Binding TaillesPageDisponibles}"
+                    SelectedItem="{Binding TaillePage}" />
+
+            <Label Text="Thème" />
+            <Picker ItemsSource="{Binding ThemesDisponibles}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixTheme}"
+                    SelectedItem="{Binding ThemeSelectionne}" />
+
+            <HorizontalStackLayout Spacing="4">
+                <CheckBox IsChecked="{Binding NotificationsActivees}" Color="{StaticResource CouleurPrimaire}" />
+                <Label Text="Notifier les relances à faire" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <Button Text="Enregistrer" Command="{Binding EnregistrerCommand}" />
+            <Label Text="{Binding MessageConfirmation}" Style="{StaticResource TexteSecondaire}" />
+
+            <Label Text="Notifications" FontAttributes="Bold" Margin="0,16,0,0" />
+            <Button Text="Tester une notification" Command="{Binding TesterNotificationCommand}" />
+            <Label Text="{Binding MessageNotification}" Style="{StaticResource TexteSecondaire}" />
+
+            <Label Text="Données" FontAttributes="Bold" Margin="0,16,0,0" />
+            <Label Text="Exportez vos données dans un fichier JSON pour les sauvegarder ou les transférer. Importer remplace toutes les données actuelles (une sauvegarde automatique est créée avant)."
+                   Style="{StaticResource TexteSecondaire}" />
+            <HorizontalStackLayout Spacing="12">
+                <Button Text="Exporter les données" Command="{Binding Sauvegarde.ExporterCommand}" />
+                <Button Text="Importer des données…" Command="{Binding Sauvegarde.ImporterCommand}"
+                        BackgroundColor="Transparent" BorderWidth="1"
+                        BorderColor="{StaticResource CouleurPrimaire}"
+                        TextColor="{StaticResource CouleurPrimaire}" />
+            </HorizontalStackLayout>
+            <Label Text="{Binding Sauvegarde.Message}" Style="{StaticResource TexteSecondaire}" />
+            <Button Text="Copier le chemin du fichier" Command="{Binding Sauvegarde.CopierCheminCommand}"
+                    IsVisible="{Binding Sauvegarde.CheminDisponible}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

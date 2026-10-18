@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageDetailEntreprise"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             xmlns:comportements="clr-namespace:SuiviCandidatures.Presentation.Comportements"
+             x:DataType="viewmodels:DetailEntrepriseViewModel"
+             Title="Entreprise">
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="16">
+
+            <!-- En-tête -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                <Label Text="{Binding NomEntreprise}" Style="{StaticResource TitrePage}" VerticalOptions="Center" />
+                <Button Grid.Column="1" Text="Modifier" Command="{Binding ModifierCommand}" />
+                <Button Grid.Column="2" Text="Supprimer" Command="{Binding SupprimerCommand}" BackgroundColor="#DC2626" />
+            </Grid>
+
+            <Label Text="{Binding MessageErreur}" TextColor="#DC2626" />
+
+            <Grid ColumnDefinitions="2*,*" ColumnSpacing="16">
+
+                <!-- Colonne principale : candidatures et contacts -->
+                <VerticalStackLayout Spacing="16" VerticalOptions="Start">
+
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Candidatures" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Aucune candidature pour cette entreprise." IsVisible="{Binding AucuneCandidature}"
+                                   Style="{StaticResource TexteSecondaire}" />
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Candidatures}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:LigneCandidature">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Grid ColumnDefinitions="*,110,230" ColumnSpacing="12">
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="QuandCandidatureTapee" />
+                                                </Grid.GestureRecognizers>
+                                                <VerticalStackLayout VerticalOptions="Center">
+                                                    <Label Text="{Binding TitreOffre}" FontAttributes="Bold" />
+                                                    <Label Text="{Binding TypeContratLibelle}" Style="{StaticResource TexteSecondaire}" />
+                                                </VerticalStackLayout>
+                                                <Label Grid.Column="1" Text="{Binding DateAffichee}" VerticalOptions="Center"
+                                                       HorizontalTextAlignment="End" />
+                                                <Border Grid.Column="2" VerticalOptions="Center"
+                                                        BackgroundColor="{Binding CouleurStatut}"
+                                                        StrokeThickness="0" Padding="12,4"
+                                                        StrokeShape="RoundRectangle 12">
+                                                    <Label Text="{Binding StatutLibelle}" TextColor="White" FontSize="12"
+                                                           HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                                                </Border>
+                                            </Grid>
+                                            <BoxView HeightRequest="1"
+                                                     Color="{AppThemeBinding Light={StaticResource CouleurContourClair}, Dark={StaticResource CouleurContourSombre}}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Contacts" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" />
+                                <Button Grid.Column="1" Text="Nouveau contact" Command="{Binding Contacts.AjouterContactCommand}" />
+                            </Grid>
+
+                            <Border Style="{StaticResource Carte}" IsVisible="{Binding Contacts.FormulaireVisible}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Contacts.TitreFormulaire}" FontAttributes="Bold" />
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Entry Text="{Binding Contacts.Nom}" Placeholder="Nom *" />
+                                        <Entry Grid.Column="1" Text="{Binding Contacts.Prenom}" Placeholder="Prénom" />
+                                    </Grid>
+                                    <Entry Text="{Binding Contacts.Role}" Placeholder="Rôle (recruteur, manager...)" />
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Entry Text="{Binding Contacts.Mail}" Placeholder="Mail" Keyboard="Email" />
+                                        <Entry Grid.Column="1" Text="{Binding Contacts.Telephone}" Placeholder="Téléphone"
+                                               MaxLength="20" Keyboard="Telephone">
+                                            <Entry.Behaviors>
+                                                <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789 +-.()" />
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                    </Grid>
+                                    <Editor Text="{Binding Contacts.Notes}" Placeholder="Notes" HeightRequest="70" AutoSize="Disabled" />
+                                    <Label Text="{Binding Contacts.MessageErreur}" TextColor="#DC2626" />
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Button Text="Enregistrer" Command="{Binding Contacts.EnregistrerContactCommand}" />
+                                        <Button Text="Annuler" Command="{Binding Contacts.AnnulerContactCommand}"
+                                                BackgroundColor="Transparent" BorderWidth="1"
+                                                BorderColor="{StaticResource CouleurPrimaire}"
+                                                TextColor="{StaticResource CouleurPrimaire}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Label Text="Aucun contact pour cette entreprise." IsVisible="{Binding Contacts.AucunContact}"
+                                   Style="{StaticResource TexteSecondaire}" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Contacts.Contacts}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:LigneContactEntreprise">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                                <VerticalStackLayout>
+                                                    <Label Text="{Binding NomComplet}" FontAttributes="Bold" />
+                                                    <Label Text="{Binding Details}" IsVisible="{Binding DetailsVisibles}"
+                                                           Style="{StaticResource TexteSecondaire}" />
+                                                </VerticalStackLayout>
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Start">
+                                                    <Button Text="Modifier" FontSize="12" Padding="10,4"
+                                                            Clicked="QuandModifierContactClique" />
+                                                    <Button Text="Supprimer" FontSize="12" Padding="10,4"
+                                                            BackgroundColor="#DC2626" Clicked="QuandSupprimerContactClique" />
+                                                </HorizontalStackLayout>
+                                            </Grid>
+                                            <BoxView HeightRequest="1"
+                                                     Color="{AppThemeBinding Light={StaticResource CouleurContourClair}, Dark={StaticResource CouleurContourSombre}}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Colonne latérale : informations et adresses -->
+                <VerticalStackLayout Grid.Column="1" Spacing="16" VerticalOptions="Start">
+
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Informations" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Site web" Style="{StaticResource TexteSecondaire}" />
+                            <Label Text="{Binding SiteWebAffiche}" IsVisible="{Binding SiteWebVisible}"
+                                   TextColor="{StaticResource CouleurPrimaire}" TextDecorations="Underline"
+                                   LineBreakMode="TailTruncation">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OuvrirSiteCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label Text="Non renseigné" IsVisible="{Binding SiteWebAbsent}" />
+                            <Label Text="Secteur" Style="{StaticResource TexteSecondaire}" />
+                            <Label Text="{Binding SecteurAffiche}" />
+                            <Label Text="Notes" Style="{StaticResource TexteSecondaire}" />
+                            <Label Text="{Binding NotesAffichees}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Style="{StaticResource Carte}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Adresses" FontAttributes="Bold" FontSize="16" />
+                            <Button Text="Ajouter une adresse" Command="{Binding Adresses.AjouterAdresseCommand}" />
+
+                            <Border Style="{StaticResource Carte}" IsVisible="{Binding Adresses.FormulaireVisible}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Adresses.TitreFormulaire}" FontAttributes="Bold" />
+                                    <Entry Text="{Binding Adresses.Rue}" Placeholder="Adresse" />
+                                    <Grid ColumnDefinitions="110,*" ColumnSpacing="8">
+                                        <Entry Text="{Binding Adresses.CodePostal}" Placeholder="Code postal"
+                                               MaxLength="5" Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789" />
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                        <Entry Grid.Column="1" Text="{Binding Adresses.Ville}" Placeholder="Ville" />
+                                    </Grid>
+                                    <Entry Text="{Binding Adresses.Mail}" Placeholder="Mail" Keyboard="Email" />
+                                    <Entry Text="{Binding Adresses.Telephone}" Placeholder="Téléphone" MaxLength="20" Keyboard="Telephone">
+                                        <Entry.Behaviors>
+                                            <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789 +-.()" />
+                                        </Entry.Behaviors>
+                                    </Entry>
+                                    <Label Text="{Binding Adresses.MessageErreur}" TextColor="#DC2626" />
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Button Text="Enregistrer" Command="{Binding Adresses.EnregistrerAdresseCommand}" />
+                                        <Button Text="Annuler" Command="{Binding Adresses.AnnulerAdresseCommand}"
+                                                BackgroundColor="Transparent" BorderWidth="1"
+                                                BorderColor="{StaticResource CouleurPrimaire}"
+                                                TextColor="{StaticResource CouleurPrimaire}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Label Text="Aucune adresse enregistrée." IsVisible="{Binding Adresses.AucuneAdresse}"
+                                   Style="{StaticResource TexteSecondaire}" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Adresses.Adresses}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="viewmodels:LigneAdresseEntreprise">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Label Text="{Binding Libelle}" FontAttributes="Bold" />
+                                            <Label Text="{Binding Coordonnees}" IsVisible="{Binding CoordonneesVisibles}"
+                                                   Style="{StaticResource TexteSecondaire}" />
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Button Text="Modifier" FontSize="12" Padding="10,4"
+                                                        Clicked="QuandModifierAdresseClique" />
+                                                <Button Text="Supprimer" FontSize="12" Padding="10,4"
+                                                        BackgroundColor="#DC2626" Clicked="QuandSupprimerAdresseClique" />
+                                            </HorizontalStackLayout>
+                                            <BoxView HeightRequest="1"
+                                                     Color="{AppThemeBinding Light={StaticResource CouleurContourClair}, Dark={StaticResource CouleurContourSombre}}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

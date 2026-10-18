@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Class="SuiviCandidatures.Presentation.Vues.PageFormulaireCandidature"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SuiviCandidatures.Presentation.ViewModels"
+             xmlns:comportements="clr-namespace:SuiviCandidatures.Presentation.Comportements"
+             xmlns:transferts="clr-namespace:SuiviCandidatures.Coeur.Transferts;assembly=SuiviCandidatures.Coeur"
+             x:DataType="viewmodels:FormulaireCandidatureViewModel"
+             Title="{Binding Titre}">
+    <ScrollView>
+        <VerticalStackLayout Padding="32" Spacing="10" MaximumWidthRequest="680" HorizontalOptions="Start">
+
+            <Label Text="{Binding Titre}" Style="{StaticResource TitrePage}" Margin="0,0,0,8" />
+
+            <Label Text="Titre de l'offre *" />
+            <Entry Text="{Binding TitreOffre}" Placeholder="Intitulé du poste" />
+
+            <!-- Entreprise : saisie libre avec suggestions -->
+            <Label Text="Entreprise *" Margin="0,8,0,0" />
+            <Entry Text="{Binding NomEntreprise}" Placeholder="Nom de l'entreprise" />
+
+            <Border Style="{StaticResource Carte}" Padding="4" IsVisible="{Binding SuggestionsVisibles}">
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Suggestions}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="transferts:ResumeEntreprise">
+                            <Label Text="{Binding Nom}" Padding="8,6">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="QuandSuggestionTapee" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="{Binding MessageEntreprise}"
+                   IsVisible="{Binding MessageEntrepriseVisible}"
+                   Style="{StaticResource TexteSecondaire}" />
+
+            <!-- Entreprise inconnue : informations de création -->
+            <Border Style="{StaticResource Carte}" IsVisible="{Binding EstNouvelleEntreprise}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Informations sur la nouvelle entreprise" FontAttributes="Bold" />
+                    <Entry Text="{Binding SiteWebEntreprise}" Placeholder="Site web" Keyboard="Url" />
+                    <Entry Text="{Binding SecteurEntreprise}" Placeholder="Secteur d'activité" />
+                    <Editor Text="{Binding NotesEntreprise}" Placeholder="Notes sur l'entreprise" HeightRequest="80" AutoSize="Disabled" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Entreprise existante : choix de l'adresse -->
+            <VerticalStackLayout IsVisible="{Binding SelecteurAdresseVisible}" Spacing="4">
+                <Label Text="Adresse de l'entreprise" />
+                <Picker ItemsSource="{Binding AdressesDisponibles}"
+                        ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixAdresse}"
+                        SelectedItem="{Binding AdresseSelectionnee}" />
+            </VerticalStackLayout>
+
+            <!-- Saisie d'une adresse : nouvelle entreprise, ou « Nouvelle adresse… » choisie -->
+            <Border Style="{StaticResource Carte}" IsVisible="{Binding SaisieAdresseVisible}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Adresse de l'entreprise (facultative)" FontAttributes="Bold" />
+                    <Entry Text="{Binding RueAdresse}" Placeholder="Adresse" />
+                    <Grid ColumnDefinitions="140,*" ColumnSpacing="8">
+                        <Entry Text="{Binding CodePostalAdresse}" Placeholder="Code postal" MaxLength="5" Keyboard="Numeric">
+                            <Entry.Behaviors>
+                                <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Entry Grid.Column="1" Text="{Binding VilleAdresse}" Placeholder="Ville" />
+                    </Grid>
+                    <Entry Text="{Binding MailAdresse}" Placeholder="Mail" Keyboard="Email" />
+                    <Entry Text="{Binding TelephoneAdresse}" Placeholder="Téléphone" MaxLength="20" Keyboard="Telephone">
+                        <Entry.Behaviors>
+                            <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789 +-.()" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Candidature -->
+            <Label Text="Date de candidature" Margin="0,8,0,0" />
+            <DatePicker Date="{Binding DateCandidature}" HorizontalOptions="Start" />
+
+            <Label Text="Statut" />
+            <Picker ItemsSource="{Binding StatutsDisponibles}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                    SelectedItem="{Binding StatutSelectionne}" />
+
+            <Label Text="Type de candidature" />
+            <Picker ItemsSource="{Binding TypesCandidatureDisponibles}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                    SelectedItem="{Binding TypeCandidatureSelectionne}" />
+
+            <Label Text="Type de contrat" />
+            <Picker ItemsSource="{Binding TypesContratDisponibles}"
+                    ItemDisplayBinding="{Binding Libelle, x:DataType=viewmodels:ChoixEnumeration}"
+                    SelectedItem="{Binding TypeContratSelectionne}" />
+
+            <Label Text="Commentaires" />
+            <Editor Text="{Binding Commentaires}" HeightRequest="100" AutoSize="Disabled" />
+
+            <Label Text="{Binding MessageErreur}" TextColor="#DC2626" />
+
+            <HorizontalStackLayout Spacing="12" Margin="0,8,0,0">
+                <Button Text="Enregistrer" Command="{Binding EnregistrerCommand}" />
+                <Button Text="Annuler" Command="{Binding AnnulerCommand}"
+                        BackgroundColor="Transparent" BorderWidth="1"
+                        BorderColor="{StaticResource CouleurPrimaire}"
+                        TextColor="{StaticResource CouleurPrimaire}" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
