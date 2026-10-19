@@ -123,10 +123,17 @@ public sealed class ServiceCandidatures(IDbContextFactory<ContexteBaseDeDonnees>
         Entreprise entreprise;
         if (existante is null)
         {
+            // Même règle que la page Entreprises : un site web doit être une adresse http ou https valide.
+            string? siteWeb = LiensWeb.Normaliser(donnees.NouvelleEntreprise?.SiteWeb);
+            if (siteWeb is not null && !LiensWeb.EstValide(siteWeb))
+            {
+                throw new ExceptionValidationMetier("Le site web doit être une adresse web valide (http ou https).");
+            }
+
             entreprise = new Entreprise
             {
                 Nom = nomEntreprise,
-                SiteWeb = Nettoyer(donnees.NouvelleEntreprise?.SiteWeb),
+                SiteWeb = siteWeb,
                 Secteur = Nettoyer(donnees.NouvelleEntreprise?.Secteur),
                 Notes = Nettoyer(donnees.NouvelleEntreprise?.Notes)
             };
