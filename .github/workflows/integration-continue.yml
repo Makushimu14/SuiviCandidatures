@@ -28,6 +28,9 @@ jobs:
       - name: Compilation
         run: dotnet build SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj -c Release -f net10.0-windows10.0.19041.0
 
+      - name: Tests unitaires
+        run: dotnet test SuiviCandidatures.Tests/SuiviCandidatures.Tests.csproj -c Release
+
   # Contrôle indicatif : la cible Mac Catalyst n'est pas testée par l'auteur du projet.
   # La version d'Xcode exigée change avec chaque version corrective du SDK .NET : un échec ici est informatif
   # et ne bloque pas le reste.
