@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- Planche de suivi : une liste de tâches dont les deux premières sont cochées -->
+    <rect x="128" y="108" width="200" height="250" rx="22" fill="#FFFFFF" />
+    <rect x="178" y="90" width="100" height="38" rx="13" fill="#1E3A8A" />
+    <circle cx="228" cy="109" r="6" fill="#DBEAFE" />
+
+    <!-- Ligne 1 : faite -->
+    <rect x="150" y="165" width="30" height="30" rx="8" fill="#16A34A" />
+    <path d="M157 180 L164 187 L174 174" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="196" y="173" width="108" height="14" rx="7" fill="#CBD5E1" />
+
+    <!-- Ligne 2 : faite -->
+    <rect x="150" y="225" width="30" height="30" rx="8" fill="#16A34A" />
+    <path d="M157 240 L164 247 L174 234" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="196" y="233" width="108" height="14" rx="7" fill="#CBD5E1" />
+
+    <!-- Ligne 3 : à faire -->
+    <rect x="152" y="287" width="26" height="26" rx="7" fill="none" stroke="#94A3B8" stroke-width="4" />
+    <rect x="196" y="293" width="76" height="14" rx="7" fill="#E2E8F0" />
+</svg>

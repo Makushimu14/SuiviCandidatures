@@ -1,5 +1,7 @@
 # Suivi des candidatures
 
+<img src="docs/icone.png" alt="Icône de l'application" width="96" />
+
 Ce projet est ma première expérience en vibecoding et a été réalisé à l'aide d'une IA en seulement quelques heures.
 
 ## Description
@@ -12,7 +14,8 @@ Développée avec .NET 10, MAUI et le modèle MVVM, sous licence MIT.
 
 ## Fonctionnalités
 
-- **Candidatures** : liste avec recherche, filtre par statut, tri et pagination ; création et modification ; historique des actions
+- **Candidatures** : liste avec recherche (titre, entreprise, référence ou lien d'une offre : utile pour savoir si l'on a déjà
+  postulé à une offre), filtre par statut, tri et pagination ; création et modification ; historique des actions
   (relances, entretiens, changements de statut) ; offres liées (site, référence, lien) ; contacts liés.
 - **Relances** : délai par défaut réglable (7 jours), délai propre à chaque candidature, relances désactivables. Les relances dues
   sont affichées sur la page d'accueil et signalées par une notification Windows au démarrage, puis toutes les 30 minutes.
@@ -61,6 +64,16 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
+### Lancer les tests
+
+```
+dotnet test SuiviCandidatures.Tests
+```
+
+Les tests couvrent le calcul des relances et des statistiques, la correspondance des noms d'entreprise, les règles de validation,
+les services (candidatures, entreprises, offres, contacts, rappels, paramètres) sur une base SQLite en mémoire, et l'export puis
+l'import des données. Ils sont aussi exécutés par l'intégration continue.
+
 ### Modifier le modèle de données
 
 Après une modification des entités, créez une migration depuis la racine du dépôt :
@@ -80,6 +93,7 @@ La base de données se trouve dans `%LOCALAPPDATA%\SuiviCandidatures`. Les expor
 
 - `SuiviCandidatures.Coeur` : modèle de données, accès à la base (EF Core), règles métier et services, sans dépendance à l'interface.
 - `SuiviCandidatures.Presentation` : application MAUI (vues XAML, modèles de vue, navigation, notifications).
+- `SuiviCandidatures.Tests` : tests unitaires du cœur (xUnit).
 
 ## État du projet et limites connues
 

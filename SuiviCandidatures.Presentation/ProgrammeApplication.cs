@@ -19,6 +19,25 @@ public static class ProgrammeApplication
         constructeur.UseLiveCharts();
         constructeur.UseMauiApp<ApplicationSuivi>();
 
+#if WINDOWS
+        // Icône de la fenêtre et de la barre des tâches : une application non packagée ne la reçoit pas automatiquement.
+        Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping("IconeFenetre", (gestionnaire, _) =>
+        {
+            try
+            {
+                string chemin = Path.Combine(AppContext.BaseDirectory, "appicon.ico");
+                if (File.Exists(chemin))
+                {
+                    gestionnaire.PlatformView.AppWindow.SetIcon(chemin);
+                }
+            }
+            catch (Exception)
+            {
+                // L'icône est décorative : un échec ne doit pas empêcher l'ouverture de la fenêtre.
+            }
+        });
+#endif
+
         // Base de données locale
         constructeur.Services.AddDbContextFactory<ContexteBaseDeDonnees>(options =>
             options.UseSqlite($"Data Source={EmplacementBaseDeDonnees.ObtenirChemin()}"));
