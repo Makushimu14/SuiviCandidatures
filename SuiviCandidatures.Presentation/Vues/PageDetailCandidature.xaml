@@ -134,7 +134,7 @@
                                         <TimePicker Time="{Binding HeureAction}" />
                                     </HorizontalStackLayout>
                                     <Editor Text="{Binding NoteAction}" Placeholder="Note (obligatoire pour « Autre »)"
-                                            HeightRequest="80" AutoSize="Disabled" />
+                                            MinimumHeightRequest="80" AutoSize="TextChanges" />
                                     <Label Text="{Binding MessageErreurAction}" TextColor="#DC2626" />
                                     <HorizontalStackLayout Spacing="12">
                                         <Button Text="Enregistrer" Command="{Binding EnregistrerActionCommand}" />
@@ -263,7 +263,7 @@
                                             <comportements:ComportementSaisieFiltree CaracteresAutorises="0123456789 +-.()" />
                                         </Entry.Behaviors>
                                     </Entry>
-                                    <Editor Text="{Binding Contacts.Notes}" Placeholder="Notes" HeightRequest="70" AutoSize="Disabled" />
+                                    <Editor Text="{Binding Contacts.Notes}" Placeholder="Notes" MinimumHeightRequest="70" AutoSize="TextChanges" />
                                     <Label Text="{Binding Contacts.MessageErreur}" TextColor="#DC2626" />
                                     <HorizontalStackLayout Spacing="12">
                                         <Button Text="Enregistrer" Command="{Binding Contacts.EnregistrerContactCommand}" />

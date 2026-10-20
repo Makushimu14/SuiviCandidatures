@@ -43,7 +43,7 @@
                     <Label Text="Informations sur la nouvelle entreprise" FontAttributes="Bold" />
                     <Entry Text="{Binding SiteWebEntreprise}" Placeholder="Site web" Keyboard="Url" />
                     <Entry Text="{Binding SecteurEntreprise}" Placeholder="Secteur d'activité" />
-                    <Editor Text="{Binding NotesEntreprise}" Placeholder="Notes sur l'entreprise" HeightRequest="80" AutoSize="Disabled" />
+                    <Editor Text="{Binding NotesEntreprise}" Placeholder="Notes sur l'entreprise" MinimumHeightRequest="80" AutoSize="TextChanges" />
                 </VerticalStackLayout>
             </Border>
 
@@ -97,7 +97,7 @@
                     SelectedItem="{Binding TypeContratSelectionne}" />
 
             <Label Text="Commentaires" />
-            <Editor Text="{Binding Commentaires}" HeightRequest="100" AutoSize="Disabled" />
+            <Editor Text="{Binding Commentaires}" MinimumHeightRequest="100" AutoSize="TextChanges" />
 
             <Label Text="{Binding MessageErreur}" TextColor="#DC2626" />
 

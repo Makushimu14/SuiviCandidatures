@@ -83,7 +83,7 @@
                                             </Entry.Behaviors>
                                         </Entry>
                                     </Grid>
-                                    <Editor Text="{Binding Contacts.Notes}" Placeholder="Notes" HeightRequest="70" AutoSize="Disabled" />
+                                    <Editor Text="{Binding Contacts.Notes}" Placeholder="Notes" MinimumHeightRequest="70" AutoSize="TextChanges" />
                                     <Label Text="{Binding Contacts.MessageErreur}" TextColor="#DC2626" />
                                     <HorizontalStackLayout Spacing="12">
                                         <Button Text="Enregistrer" Command="{Binding Contacts.EnregistrerContactCommand}" />

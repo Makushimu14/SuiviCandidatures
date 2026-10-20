@@ -20,7 +20,7 @@
             <Entry Text="{Binding Secteur}" />
 
             <Label Text="Notes" />
-            <Editor Text="{Binding Notes}" HeightRequest="120" AutoSize="Disabled" />
+            <Editor Text="{Binding Notes}" MinimumHeightRequest="120" AutoSize="TextChanges" />
 
             <Label Text="Les adresses et les contacts s'ajoutent depuis la fiche de l'entreprise."
                    Style="{StaticResource TexteSecondaire}" />
