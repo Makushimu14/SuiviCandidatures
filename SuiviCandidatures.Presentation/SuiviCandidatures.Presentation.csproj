@@ -26,12 +26,14 @@
   <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-    <ApplicationIcon>Platforms\Windows\appicon.ico</ApplicationIcon>
+    <ApplicationIcon>Platforms\Windows\icone-application.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <!-- Copiée à côté de l'exécutable : sert à l'icône de la fenêtre et de la barre des tâches (voir ProgrammeApplication). -->
+  <!-- Copiée à côté de l'exécutable : sert à l'icône de la fenêtre et de la barre des tâches (voir ProgrammeApplication).
+       Nom distinct de « appicon.ico » : MAUI génère lui-même un fichier de ce nom à partir de MauiIcon,
+       et deux fichiers de même nom dans la publication provoquent une erreur. -->
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
-    <Content Include="Platforms\Windows\appicon.ico" Link="appicon.ico"
+    <Content Include="Platforms\Windows\icone-application.ico" Link="icone-application.ico"
              CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
