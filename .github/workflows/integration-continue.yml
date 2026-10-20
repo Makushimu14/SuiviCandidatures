@@ -29,13 +29,14 @@ jobs:
         run: dotnet build SuiviCandidatures.Presentation/SuiviCandidatures.Presentation.csproj -c Release -f net10.0-windows10.0.19041.0
 
       - name: Tests unitaires
-        run: dotnet test SuiviCandidatures.Tests/SuiviCandidatures.Tests.csproj -c Release
+        run: dotnet test --project SuiviCandidatures.Tests/SuiviCandidatures.Tests.csproj -c Release
 
-  # Contrôle indicatif : la cible Mac Catalyst n'est pas testée par l'auteur du projet.
-  # La version d'Xcode exigée change avec chaque version corrective du SDK .NET : un échec ici est informatif
-  # et ne bloque pas le reste.
+  # Contrôle indicatif, à lancer à la main (onglet Actions, « Run workflow ») : la cible Mac Catalyst n'est pas
+  # testée par l'auteur du projet. Le SDK .NET pour Mac Catalyst exige une version précise d'Xcode (27.1 au moment de
+  # l'écriture) que les machines GitHub n'ont pas toujours : un échec est alors attendu et ne dit rien du code.
   maccatalyst:
-    name: Compilation Mac Catalyst (indicatif)
+    name: Compilation Mac Catalyst (manuelle, indicative)
+    if: github.event_name == 'workflow_dispatch'
     runs-on: macos-26
     continue-on-error: true
     steps:

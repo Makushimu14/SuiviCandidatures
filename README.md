@@ -67,7 +67,7 @@ git push origin v1.0.0
 ### Lancer les tests
 
 ```
-dotnet test SuiviCandidatures.Tests
+dotnet test --project SuiviCandidatures.Tests/SuiviCandidatures.Tests.csproj
 ```
 
 Les tests couvrent le calcul des relances et des statistiques, la correspondance des noms d'entreprise, les règles de validation,

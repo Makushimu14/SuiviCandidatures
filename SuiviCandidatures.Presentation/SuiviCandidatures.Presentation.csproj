@@ -51,4 +51,9 @@
     <ProjectReference Include="..\SuiviCandidatures.Coeur\SuiviCandidatures.Coeur.csproj" />
   </ItemGroup>
 
+  <!-- Même avis suspendu que dans le projet Coeur (voir son fichier de projet pour la justification). -->
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
+  </ItemGroup>
+
 </Project>
