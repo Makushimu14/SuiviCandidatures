@@ -25,7 +25,7 @@ public static class ProgrammeApplication
         {
             try
             {
-                string chemin = Path.Combine(AppContext.BaseDirectory, "appicon.ico");
+                string chemin = Path.Combine(AppContext.BaseDirectory, "icone-application.ico");
                 if (File.Exists(chemin))
                 {
                     gestionnaire.PlatformView.AppWindow.SetIcon(chemin);
